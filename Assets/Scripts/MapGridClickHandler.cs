@@ -13,7 +13,7 @@ public class MapGridClickHandler : MonoBehaviour
             Vector3Int cellPosition = grid.WorldToCell(world);
             Vector3 cellCenterWorld = grid.CellToWorld(cellPosition);
 
-            EventEmitter.Move(cellCenterWorld);
+            //EventEmitter.Move(cellCenterWorld);
         }
     }
 }
