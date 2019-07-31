@@ -4,7 +4,7 @@ public class PlayerManager : MonoBehaviour {
 
     public GameObject playerAvatarPrefab;
 
-    private Dictionary<string, GameObject> playerGameObjects; 
+    private Dictionary<string, GameObject> playerGameObjects = new Dictionary<string, GameObject>(); 
 
     private static PlayerManager playerManager;
 
@@ -51,10 +51,10 @@ public class PlayerManager : MonoBehaviour {
         playerGameObjects.Add(playerSessionId, playerAvatar);
     }
 
-    private void HandlePlayerDisconnected(RealmEventBase playerConnectedEventData) {
-        PlayerConnectedEvent playerConnectedEvent = playerConnectedEventData as PlayerConnectedEvent;
+    private void HandlePlayerDisconnected(RealmEventBase playerDisconnectedEventData) {
+        PlayerDisconnectedEvent playerDisconnectedEvent = playerDisconnectedEventData as PlayerDisconnectedEvent;
 
-        string playerSessionId = playerConnectedEvent.playerSessionId;
+        string playerSessionId = playerDisconnectedEvent.playerSessionId;
         Debug.Log("Player Disconnected: " + playerSessionId);
 
         GameObject playerAvatar;

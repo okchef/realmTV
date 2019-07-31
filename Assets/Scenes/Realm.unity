@@ -192,9 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 188248c1e1d41084b824162edcab4701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerAvatarPrefab: {fileID: 1610292814440269326, guid: 63dacb97fd765a047a7bbfb1f298b5ec,
+  playerAvatarPrefab: {fileID: 1610292814440269326, guid: 63dacb97fd765a047a7bbfb1f298b5ec,
     type: 3}
-  ActivePlayerAvatar: {fileID: 0}
 --- !u!114 &111410527
 MonoBehaviour:
   m_ObjectHideFlags: 0

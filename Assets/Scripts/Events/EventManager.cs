@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 public class EventManager : MonoBehaviour
 {
@@ -87,6 +88,13 @@ public class EventManager : MonoBehaviour
             thisEvent.Invoke(eventData);
         }
     }
+
+    /*private static async void InvokeAsync(RealmEventTopic eventTopic, RealmEventBase eventData) {
+        await Task.Run(() => {
+            System.Threading.Thread.Sleep(5000);
+            eventTopic.Invoke(eventData);
+        });
+    }*/
 
     public static void TriggerEvent(string eventType, string eventJson) {
         Type eventDataType = RealmEventRegistry.GetEventDataType(eventType);
