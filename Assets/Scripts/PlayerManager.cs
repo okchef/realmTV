@@ -31,11 +31,18 @@ public class PlayerManager : MonoBehaviour {
     public void OnEnable() {
         EventManager.StartListening<PlayerConnectedEvent>(HandlePlayerConnected);
         EventManager.StartListening<PlayerDisconnectedEvent>(HandlePlayerDisconnected);
+        EventManager.StartListening<PlayerMoveEvent>(HandlePlayerMove);
     }
 
     public void OnDisable() {
         EventManager.StopListening<PlayerConnectedEvent>(HandlePlayerConnected);
         EventManager.StopListening<PlayerDisconnectedEvent>(HandlePlayerDisconnected);
+        EventManager.StartListening<PlayerMoveEvent>(HandlePlayerMove);
+    }
+
+    private void HandlePlayerMove(RealmEventBase baseEvent) {
+        PlayerMoveEvent playerMoveEvent = baseEvent as PlayerMoveEvent;
+        Debug.Log("Player Moved: " + playerMoveEvent.direction);
     }
 
     private void HandlePlayerConnected(RealmEventBase playerConnectedEventData) {
@@ -45,6 +52,8 @@ public class PlayerManager : MonoBehaviour {
         Debug.Log("Player Connected: " + playerSessionId);
 
         GameObject playerAvatar = Instantiate(playerAvatarPrefab);
+        playerAvatar.GetComponent<Player>().playerId = playerSessionId;
+
         if (playerGameObjects.ContainsKey(playerSessionId)) {
             Debug.LogError("Player with session ID attmempted to connect twice: " + playerSessionId);
         }
