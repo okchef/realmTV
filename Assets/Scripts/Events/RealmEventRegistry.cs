@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using Newtonsoft.Json;
 
 public class RealmEventRegistry : MonoBehaviour
 {
@@ -43,14 +44,14 @@ public class RealmEventRegistry : MonoBehaviour
     }
 
     public static T ParseEvent<T>(string json) where T : RealmEventBase {
-        return JsonUtility.FromJson<T>(json);
+        return JsonConvert.DeserializeObject<T>(json);
     }
 
     public static RealmEventBase ParseEvent(string json, Type type) {
         if (!typeof(RealmEventBase).IsAssignableFrom(type)) {
             Debug.LogError("Tried to parse eventData using invalid type: " + type);
         }
-        return JsonUtility.FromJson(json, type) as RealmEventBase;
+        return JsonConvert.DeserializeObject(json, type) as RealmEventBase;
     }
 
     public static Type GetEventDataType(string eventType) {

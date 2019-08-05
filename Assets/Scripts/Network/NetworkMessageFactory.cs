@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Newtonsoft.Json;
 
 public class NetworkMessageFactory
 {
@@ -8,11 +9,11 @@ public class NetworkMessageFactory
     }
 
     public static NetworkMessage<T> GetNetworkMessage<T>(string json) where T : RealmEventBase {
-        return JsonUtility.FromJson<NetworkMessage<T>>(json);
+        return JsonConvert.DeserializeObject<NetworkMessage<T>>(json);
     }
 
     public static object GetNetworkMessage(string json, Type networkMessageType) {
-        return JsonUtility.FromJson(json, networkMessageType);
+        return JsonConvert.DeserializeObject(json, networkMessageType);
     }
 
 }

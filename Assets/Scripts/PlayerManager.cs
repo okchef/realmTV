@@ -14,7 +14,7 @@ public class PlayerManager : MonoBehaviour {
                 playerManager = FindObjectOfType(typeof(PlayerManager)) as PlayerManager;
 
                 if (!playerManager) {
-                    Debug.LogError("There needs to be one active EventManger script on a GameObject in your scene.");
+                    Debug.LogError("There needs to be one active PlayerManager script on a GameObject in your scene.");
                 } else {
                     playerManager.Init();
                 }
@@ -49,29 +49,31 @@ public class PlayerManager : MonoBehaviour {
         PlayerConnectedEvent playerConnectedEvent = playerConnectedEventData as PlayerConnectedEvent;
 
         string playerSessionId = playerConnectedEvent.playerSessionId;
-        Debug.Log("Player Connected: " + playerSessionId);
+        string playerId = playerConnectedEvent.playerId;
+        Debug.Log("Player Connected {playerId: " + playerId + ", playerSessionId: " + playerSessionId);
 
         GameObject playerAvatar = Instantiate(playerAvatarPrefab);
-        playerAvatar.GetComponent<Player>().playerId = playerSessionId;
+        playerAvatar.GetComponent<Player>().playerId = playerId;
 
-        if (playerGameObjects.ContainsKey(playerSessionId)) {
-            Debug.LogError("Player with session ID attmempted to connect twice: " + playerSessionId);
+        if (playerGameObjects.ContainsKey(playerId)) {
+            Debug.LogError("Player with ID attmempted to connect twice: " + playerId);
         }
-        playerGameObjects.Add(playerSessionId, playerAvatar);
+        playerGameObjects.Add(playerId, playerAvatar);
     }
 
     private void HandlePlayerDisconnected(RealmEventBase playerDisconnectedEventData) {
         PlayerDisconnectedEvent playerDisconnectedEvent = playerDisconnectedEventData as PlayerDisconnectedEvent;
 
         string playerSessionId = playerDisconnectedEvent.playerSessionId;
-        Debug.Log("Player Disconnected: " + playerSessionId);
+        string playerId = playerDisconnectedEvent.playerId;
+        Debug.Log("Player Disconnected {playerId: " + playerId + ", playerSessionId: " + playerSessionId);
 
         GameObject playerAvatar;
-        if (playerGameObjects.TryGetValue(playerSessionId, out playerAvatar)) {
+        if (playerGameObjects.TryGetValue(playerId, out playerAvatar)) {
             Destroy(playerAvatar);
-            playerGameObjects.Remove(playerSessionId);
+            playerGameObjects.Remove(playerId);
         } else {
-            Debug.LogError("Unrecognized Player Disconnected: " + playerSessionId);
+            Debug.LogError("Unrecognized Player Disconnected: " + playerId);
         }
     }
 

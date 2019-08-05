@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System;
-using System.Reflection;
-using UnityEngine.Events;
 
 public class NetworkHandler : MonoBehaviour
 {
@@ -24,8 +22,11 @@ public class NetworkHandler : MonoBehaviour
                         object genericMessage = NetworkMessageFactory.GetNetworkMessage(message, networkMessageType);
                         object realmEvent = networkMessageType.GetField("realmEvent").GetValue(genericMessage);
 
-                        // TODO: Fire of this event and continue. Don't wait for a result.
+                        RealmStateManager.UpdateState(networkMessage.realmStateFragment);
+
+                        // TODO: Fire off this event and continue. Don't wait for a result.
                         EventManager.TriggerEvent(networkMessage.realmEventType, realmEvent as RealmEventBase);
+                        RealmStateManager.UpdateState(networkMessage.realmStateFragment);
                     }
                 } catch(Exception e) {
                     Debug.Log("Exception in NetworkHandler: " + e.Message);
@@ -36,7 +37,6 @@ public class NetworkHandler : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
     void OnDestroy()
     {
         NetworkConnection.Close();

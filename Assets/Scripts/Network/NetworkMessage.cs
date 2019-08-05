@@ -6,4 +6,5 @@ public class NetworkMessage<T> where T : RealmEventBase
     public string playerSessionId;
     public T realmEvent;
     public string realmEventType;
+    public RealmState realmStateFragment;
 }
