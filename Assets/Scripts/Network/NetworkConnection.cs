@@ -1,11 +1,16 @@
 ﻿using System.Net.WebSockets;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text;
 
+using Newtonsoft.Json;
+
 public class NetworkConnection
 {
     private static ClientWebSocket webSocket;
+
+    static HttpClient client = new HttpClient();
 
     public async static Task Connect() {
         webSocket = new ClientWebSocket();
@@ -32,5 +37,15 @@ public class NetworkConnection
 
     public static bool IsOpen() {
         return webSocket != null && WebSocketState.Open.Equals(webSocket.State);
+    }
+
+    public async static Task<RealmState> GetStateAsync() {
+        HttpResponseMessage response = await client.GetAsync("http://localhost:8080/state");
+        if (response.IsSuccessStatusCode) {
+            string responseContent = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<RealmState>(responseContent);
+        } else {
+            return null;
+        }
     }
 }

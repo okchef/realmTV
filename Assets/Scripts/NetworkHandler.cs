@@ -6,6 +6,10 @@ public class NetworkHandler : MonoBehaviour
     // Start is called before the first frame update
     async void Start()
     {
+        RealmState initialState = await NetworkConnection.GetStateAsync();
+        RealmStateManager.UpdateState(initialState);
+        MapManager.InitMap(initialState.map);
+
         await NetworkConnection.Connect();
 
         while (NetworkConnection.IsOpen()) {

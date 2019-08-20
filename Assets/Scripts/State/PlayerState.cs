@@ -6,7 +6,7 @@ public class PlayerState
 {
     public bool connected;
 
-    public HexMapCoordinates position;
+    public Vector2Int position;
 
     public String playerSessionId;
 
