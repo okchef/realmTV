@@ -55,6 +55,13 @@ public class PlayerManager : MonoBehaviour {
         GameObject playerAvatar = Instantiate(playerAvatarPrefab);
         playerAvatar.GetComponent<Player>().playerId = playerId;
 
+        IReadPlayerState playerState = RealmStateManager.GetRealmState().GetPlayerState(playerId);
+        Color playerColor = new Color();
+
+        if (ColorUtility.TryParseHtmlString(playerState.GetColor(), out playerColor)) {
+            playerAvatar.GetComponent<MeshRenderer>().material.color = playerColor;
+        }
+
         if (playerGameObjects.ContainsKey(playerId)) {
             Debug.LogError("Player with ID attmempted to connect twice: " + playerId);
         }

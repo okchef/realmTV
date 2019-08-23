@@ -31,4 +31,8 @@ public class RealmStateManager : MonoBehaviour
     public static void UpdateState(RealmState updatedState) {
         instance.realmState.UpdateWith(updatedState);
     }
+
+    public static IReadRealmState GetRealmState() {
+        return instance.realmState;
+    }
 }

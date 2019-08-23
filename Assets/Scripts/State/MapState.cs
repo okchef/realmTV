@@ -5,7 +5,7 @@ using UnityEngine;
 using Newtonsoft.Json;
 
 [Serializable]
-public class MapState
+public class MapState : IReadMapState
 {
     public Dictionary<string, HexState> hexes = new Dictionary<string, HexState>();
 

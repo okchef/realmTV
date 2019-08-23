@@ -2,7 +2,7 @@
 using System;
 
 [Serializable]
-public class HexState
+public class HexState : IReadHexState
 {
     public bool visible;
 

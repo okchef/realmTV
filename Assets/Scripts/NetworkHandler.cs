@@ -30,7 +30,7 @@ public class NetworkHandler : MonoBehaviour
 
                         // TODO: Fire off this event and continue. Don't wait for a result.
                         EventManager.TriggerEvent(networkMessage.realmEventType, realmEvent as RealmEventBase);
-                        RealmStateManager.UpdateState(networkMessage.realmStateFragment);
+                        //RealmStateManager.UpdateState(networkMessage.realmStateFragment);
                     }
                 } catch(Exception e) {
                     Debug.Log("Exception in NetworkHandler: " + e.Message);

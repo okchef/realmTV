@@ -2,8 +2,7 @@
 using System;
 
 [Serializable]
-public class RealmState
-{
+public class RealmState : IReadRealmState {
     public String gameId;
 
     public Dictionary<String, PlayerState> players = new Dictionary<string, PlayerState>();
@@ -23,5 +22,9 @@ public class RealmState
         if (other.map != null) {
             map.UpdateWith(other.map);
         }
+    }
+
+    IReadPlayerState IReadRealmState.GetPlayerState(string playerId) {
+        return this.players[playerId];
     }
 }
