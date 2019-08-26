@@ -15,4 +15,12 @@ public class HexState : IReadHexState
             this.terrain = other.terrain;
         }
     }
+
+    string IReadHexState.GetTerrain() {
+        return this.terrain;
+    }
+
+    bool IReadHexState.IsVisible() {
+        return this.visible;
+    }
 }

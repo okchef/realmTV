@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour {
 
     private static PlayerManager playerManager;
 
+    private Grid mapGrid;
+
     public static PlayerManager instance {
         get {
             if (!playerManager) {
@@ -29,12 +31,14 @@ public class PlayerManager : MonoBehaviour {
     }
 
     public void OnEnable() {
+        mapGrid = Component.FindObjectOfType<Grid>();
         EventManager.StartListening<PlayerConnectedEvent>(HandlePlayerConnected);
         EventManager.StartListening<PlayerDisconnectedEvent>(HandlePlayerDisconnected);
         EventManager.StartListening<PlayerMoveEvent>(HandlePlayerMove);
     }
 
     public void OnDisable() {
+        mapGrid = null;
         EventManager.StopListening<PlayerConnectedEvent>(HandlePlayerConnected);
         EventManager.StopListening<PlayerDisconnectedEvent>(HandlePlayerDisconnected);
         EventManager.StartListening<PlayerMoveEvent>(HandlePlayerMove);
@@ -52,7 +56,8 @@ public class PlayerManager : MonoBehaviour {
         string playerId = playerConnectedEvent.playerId;
         Debug.Log("Player Connected {playerId: " + playerId + ", playerSessionId: " + playerSessionId);
 
-        GameObject playerAvatar = Instantiate(playerAvatarPrefab);
+        Vector3Int spawnPosition = RealmStateManager.GetRealmState().GetMapState().GetSpawnPosition();
+        GameObject playerAvatar = Instantiate(playerAvatarPrefab, mapGrid.CellToWorld(spawnPosition), Quaternion.identity);
         playerAvatar.GetComponent<Player>().playerId = playerId;
 
         IReadPlayerState playerState = RealmStateManager.GetRealmState().GetPlayerState(playerId);

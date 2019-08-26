@@ -9,6 +9,12 @@ public class MapState : IReadMapState
 {
     public Dictionary<string, HexState> hexes = new Dictionary<string, HexState>();
 
+    public Nullable<int> height;
+
+    public Nullable<int> width;
+
+    public Nullable<Vector3Int> spawnPosition;
+
     public HexState GetHexState(Vector3Int position) {
         return hexes[position.x + "," + position.y];
     }
@@ -18,7 +24,7 @@ public class MapState : IReadMapState
     }
 
     public void UpdateWith(MapState other) {
-        foreach (KeyValuePair<String, HexState> element in other.hexes) {
+        foreach (KeyValuePair<string, HexState> element in other.hexes) {
             HexState currentHexState;
             if (this.hexes.TryGetValue(element.Key, out currentHexState)) {
                 currentHexState.UpdateWith(element.Value);
@@ -26,6 +32,17 @@ public class MapState : IReadMapState
                 this.hexes.Add(element.Key, element.Value);
             }
         }
+
+        if (other.height != null) {
+            this.height = other.height;
+        }
+
+        if (other.width != null) {
+            this.width = other.width;
+        }
+
+        if (other.spawnPosition != null)
+            this.spawnPosition = other.spawnPosition;
     }
 
     public List<Vector3Int> Coordinates() {
@@ -35,5 +52,13 @@ public class MapState : IReadMapState
             coordinates.Add(new Vector3Int(int.Parse(coord[0]), int.Parse(coord[1]), 0));
         }
         return coordinates;
+    }
+
+    IReadHexState IReadMapState.GetHexState(Vector2Int position) {
+        return hexes[position.x + "," + position.y];
+    }
+
+    Vector3Int IReadMapState.GetSpawnPosition() {
+        return this.spawnPosition ?? new Vector3Int(-1,-1,-1);
     }
 }

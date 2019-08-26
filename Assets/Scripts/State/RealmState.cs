@@ -7,7 +7,7 @@ public class RealmState : IReadRealmState {
 
     public Dictionary<String, PlayerState> players = new Dictionary<string, PlayerState>();
 
-    public MapState map = new MapState();
+    public MapState map;
 
     public void UpdateWith(RealmState other) {
         foreach (KeyValuePair<String, PlayerState> element in other.players) {
@@ -19,6 +19,10 @@ public class RealmState : IReadRealmState {
             }
         }
 
+        if (this.map == null) {
+            this.map = new MapState();
+        }
+
         if (other.map != null) {
             map.UpdateWith(other.map);
         }
@@ -26,5 +30,9 @@ public class RealmState : IReadRealmState {
 
     IReadPlayerState IReadRealmState.GetPlayerState(string playerId) {
         return this.players[playerId];
+    }
+
+    public IReadMapState GetMapState() {
+        return this.map;
     }
 }
